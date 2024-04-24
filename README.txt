@@ -1,0 +1,1 @@
+Methane is a aplication for simplifying sdl2 connection to visual studio
