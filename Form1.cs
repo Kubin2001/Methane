@@ -73,8 +73,8 @@ namespace MethaneNew
                         string headerFileName = Path.Combine(baseDirectory, textBoxClass.Text + ".h");
                         string cppFileName = Path.Combine(baseDirectory, textBoxClass.Text + ".cpp");
 
-                        File.WriteAllText(headerFileName, CreateClassString());
-                        File.WriteAllText(cppFileName, CreateClassDefString());
+                        File.WriteAllText(headerFileName, CreateClassDefString(textBoxClass.Text));
+                        File.WriteAllText(cppFileName, CreateClassString(textBoxClass.Text));
 
                         MessageBox.Show("Files created successfully!");
                     }
@@ -300,54 +300,26 @@ namespace MethaneNew
         }
 
 
-        public string CreateClassString()
+        public string CreateClassString(string text)
         {
-            StringBuilder MainString = new StringBuilder();
-            MainString.AppendLine("#pragma once");
-            MainString.AppendLine("#include <iostream>");
-            MainString.AppendLine("#include <SDL.h>");
-            MainString.AppendLine("");
-            MainString.AppendLine("");
-            MainString.AppendLine("class " + textBoxClass.Text);
-            MainString.AppendLine("{");
-            MainString.AppendLine("    private:");
-            MainString.AppendLine("        SDL_Texture * texture = nullptr;");
-            MainString.AppendLine("        SDL_Rect rectangle;");
-            MainString.AppendLine("");
-            MainString.AppendLine("    public:");
-            MainString.AppendLine("        SDL_Texture *GetTexture();");
-            MainString.AppendLine("        void SetTexture(SDL_Texture* temptex);");
-            MainString.AppendLine("        SDL_Rect* GetRectangle();");
-            MainString.AppendLine("        void Render(SDL_Renderer* renderer);");
-            MainString.AppendLine("};");
+            string filePath = "Code/MClassM.cpp";
 
-            return MainString.ToString();
+            string content = File.ReadAllText(filePath);
 
+            string updatedContent = content.Replace("MClassM", text);
+
+            return updatedContent;
         }
 
-        public string CreateClassDefString()
+        public string CreateClassDefString(string text)
         {
-            StringBuilder MainString = new StringBuilder();
-            MainString.AppendLine("#include <iostream>");
-            MainString.AppendLine("#include <SDL.h>");
-            MainString.AppendLine("#include \"" + textBoxClass.Text + ".h\"");
-            MainString.AppendLine("SDL_Texture* " + textBoxClass.Text + "::GetTexture() {");
-            MainString.AppendLine("    return texture;");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxClass.Text + "::SetTexture(SDL_Texture * temptex) {");
-            MainString.AppendLine("    texture = temptex;");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("SDL_Rect* " + textBoxClass.Text + "::GetRectangle() {");
-            MainString.AppendLine("    return &rectangle;");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxClass.Text + "::Render(SDL_Renderer * renderer) {");
-            MainString.AppendLine("    SDL_RenderCopy(renderer, texture, NULL, &rectangle);");
-            MainString.AppendLine("}");
+            string filePath = "Code/MClassM.h";
 
-            return MainString.ToString();
+            string content = File.ReadAllText(filePath);
+
+            string updatedContent = content.Replace("MClassM", text);
+
+            return updatedContent;
         }
 
         public string CreateMainString()
