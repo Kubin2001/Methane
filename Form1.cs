@@ -9,15 +9,22 @@ namespace MethaneNew
     public partial class Form1 : Form
     {
         static string? SDLPath;
-        static string? SDLPathImage;
-        static string? sdlLibPath;
-        static string? sdlLibPathImage;
         static string? sdlIncludePath;
+        static string? sdlLibPath;
+
+        static string? SDLPathImage;
+        static string? sdlLibPathImage;
         static string? sdlIncludePathImage;
+
+        static string? SDLPathMixer;
+        static string? sdlLibPathMixer;
+        static string? sdlIncludePathMixer;
+
         static string? sdlFilePath;
         static string? sdlFilePath2;
         static string? sdlFilePath3;
         static string? sdlFilePath4;
+        static string? sdlFilePath5;
         static string? projectPath;
         static string? projectDirectoryPath;
         public Form1()
@@ -152,6 +159,34 @@ namespace MethaneNew
 
                 }
 
+                if (checkBoxMixer.Checked == true)
+                {
+                    MessageBox.Show("Now select sdl mixer location");
+                    var dialogResult3 = SDLDialog.ShowDialog();
+
+                    if (dialogResult3 == DialogResult.OK)
+                    {
+                        SDLPathMixer = SDLDialog.SelectedPath;
+                        string sdltempPath = Path.Combine(SDLPathMixer, "lib");
+
+                        if (checkBox64.Checked == false) { sdlLibPathMixer = Path.Combine(sdltempPath, "x86"); }
+
+                        else { sdlLibPathMixer = Path.Combine(sdltempPath, "x64"); }
+
+                        sdlFilePath5 = Path.Combine(sdlLibPathMixer, "SDL2_mixer.dll");
+
+                        sdlIncludePathMixer = Path.Combine(SDLPathMixer, "include");
+
+                        MessageBox.Show("SDL Mixer loaded");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No path selected.");
+                        return;
+                    }
+
+                }
+
                 MessageBox.Show("now select vcxproj file");
                 SDLOpenDialog.Filter = "Visual Studio C++ project (*.vcxproj)|*.vcxproj";
                 var result = SDLOpenDialog.ShowDialog();
@@ -189,7 +224,12 @@ namespace MethaneNew
                 ConnectInclude(doc, sdlIncludePathImage!, nsmgr);
                 ConnectLibraries(doc, sdlLibPathImage!, nsmgr);
                 ConnectDependencies(doc, "SDL2_image.lib", nsmgr);
-                //ConnectVC(doc, sdlIncludePathImage! + ";$(IncludePath)", sdlLibPathImage! + ";$(LibraryPath)", nsmgr);
+            }
+            if (checkBoxMixer.Checked == true)
+            {
+                ConnectInclude(doc, sdlIncludePathMixer!, nsmgr);
+                ConnectLibraries(doc, sdlLibPathMixer!, nsmgr);
+                ConnectDependencies(doc, "SDL2_mixer.lib", nsmgr);
             }
 
             ConnectInclude(doc, "%(AdditionalIncludeDirectories)", nsmgr);
@@ -207,6 +247,12 @@ namespace MethaneNew
                 File.Copy(sdlFilePath2!, filePath1, overwrite: true);
                 File.Copy(sdlFilePath3!, filePath2, overwrite: true);
                 File.Copy(sdlFilePath4!, filePath3, overwrite: true);
+            }
+            if (checkBoxMixer.Checked == true)
+            {
+                string filePath1 = Path.Combine(projectDirectoryPath!, "SDL2_mixer.dll");
+                File.Copy(sdlFilePath5!, filePath1, overwrite: true);
+
             }
 
             MessageBox.Show("SDL linked to the project");

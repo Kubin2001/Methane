@@ -41,6 +41,7 @@
             checkBox32 = new CheckBox();
             checkBox64 = new CheckBox();
             checkBoxImage = new CheckBox();
+            checkBoxMixer = new CheckBox();
             SuspendLayout();
             // 
             // BtnClassCreate
@@ -75,7 +76,7 @@
             button1.Name = "button1";
             button1.Size = new Size(138, 22);
             button1.TabIndex = 2;
-            button1.Text = "METHANE v0.4";
+            button1.Text = "METHANE v0.6";
             button1.UseVisualStyleBackColor = true;
             // 
             // textBoxClass
@@ -145,11 +146,22 @@
             checkBoxImage.Text = "InstallSDLImage";
             checkBoxImage.UseVisualStyleBackColor = true;
             // 
+            // checkBoxMixer
+            // 
+            checkBoxMixer.AutoSize = true;
+            checkBoxMixer.Location = new Point(246, 224);
+            checkBoxMixer.Name = "checkBoxMixer";
+            checkBoxMixer.Size = new Size(107, 19);
+            checkBoxMixer.TabIndex = 9;
+            checkBoxMixer.Text = "installSDLMixer";
+            checkBoxMixer.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(checkBoxMixer);
             Controls.Add(checkBoxImage);
             Controls.Add(checkBox64);
             Controls.Add(checkBox32);
@@ -181,5 +193,6 @@
         private CheckBox checkBox32;
         private CheckBox checkBox64;
         private CheckBox checkBoxImage;
+        private CheckBox checkBoxMixer;
     }
 }
