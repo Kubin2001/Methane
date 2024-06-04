@@ -3,6 +3,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MethaneNew
 {
@@ -47,9 +48,9 @@ namespace MethaneNew
                         string cppFileName = Path.Combine(baseDirectory, textBoxSkeleton.Text + ".cpp");
                         string cppMainFileName = Path.Combine(baseDirectory, "main.cpp");
 
-                        File.WriteAllText(headerFileName, CreateGameString());
-                        File.WriteAllText(cppFileName, CreateGameDefString());
-                        File.WriteAllText(cppMainFileName, CreateMainString());
+                        File.WriteAllText(headerFileName, CreateGameDefString(textBoxSkeleton.Text));
+                        File.WriteAllText(cppFileName, CreateGameString(textBoxSkeleton.Text));
+                        File.WriteAllText(cppMainFileName, CreateMainString(textBoxSkeleton.Text));
 
                         MessageBox.Show("Files created successfully!");
                     }
@@ -368,131 +369,39 @@ namespace MethaneNew
             return updatedContent;
         }
 
-        public string CreateMainString()
+        public string CreateMainString(string text)
         {
-            StringBuilder MainString = new StringBuilder();
-            MainString.AppendLine("#include <iostream>");
-            MainString.AppendLine("#include \"" + textBoxSkeleton.Text + ".h\"");
-            MainString.AppendLine("");
-            MainString.AppendLine("");
-            MainString.AppendLine("int main(int argv, char* argc[])");
-            MainString.AppendLine("{");
-            MainString.AppendLine("    bool status = true;");
-            MainString.AppendLine("    " + textBoxSkeleton.Text + "* " + textBoxSkeleton.Text.ToLower() + " = new " + textBoxSkeleton.Text + "();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    " + textBoxSkeleton.Text.ToLower() + "->Start();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    while (status)");
-            MainString.AppendLine("    {");
-            MainString.AppendLine("        " + textBoxSkeleton.Text.ToLower() + "->Movement(status);");
-            MainString.AppendLine("        " + textBoxSkeleton.Text.ToLower() + "->Events();");
-            MainString.AppendLine("        " + textBoxSkeleton.Text.ToLower() + "->Render();");
-            MainString.AppendLine("");
-            MainString.AppendLine("        SDL_Delay(16);");
-            MainString.AppendLine("    }");
-            MainString.AppendLine("");
-            MainString.AppendLine("    delete " + textBoxSkeleton.Text.ToLower() + ";");
-            MainString.AppendLine("    return 0;");
-            MainString.AppendLine("}");
-            return MainString.ToString();
+            string filePath = "Code/main.cpp";
+
+            string content = File.ReadAllText(filePath);
+
+            string updatedContent = content.Replace("MClassM", text);
+
+            string newContent = updatedContent.Replace("mclassm", text.ToLower());
+
+            return newContent;
 
         }
-        public string CreateGameString()
+        public string CreateGameString(string text)
         {
-            StringBuilder MainString = new StringBuilder();
-            MainString.AppendLine("#pragma once");
-            MainString.AppendLine("#include <SDL.h>");
-            MainString.AppendLine("");
-            MainString.AppendLine("class " + textBoxSkeleton.Text + " {");
-            MainString.AppendLine("private:");
-            MainString.AppendLine("    SDL_Window* window;");
-            MainString.AppendLine("    SDL_Renderer* renderer;");
-            MainString.AppendLine("");
-            MainString.AppendLine("public:");
-            MainString.AppendLine("    " + textBoxSkeleton.Text + "();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void Start();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void LoadTextures();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void Events();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void Exit(bool& status, const Uint8* state);");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void Movement(bool& status);");
-            MainString.AppendLine("");
-            MainString.AppendLine("    void Render();");
-            MainString.AppendLine("");
-            MainString.AppendLine("    SDL_Texture* load(const char* file, SDL_Renderer* ren);");
-            MainString.AppendLine("");
-            MainString.AppendLine("    ~" + textBoxSkeleton.Text + "();");
-            MainString.AppendLine("};");
-            return MainString.ToString();
+            string filePath = "Code/MGameClassM.cpp";
+
+            string content = File.ReadAllText(filePath);
+
+            string updatedContent = content.Replace("MClassM", text);
+
+            return updatedContent;
         }
 
-        public string CreateGameDefString()
+        public string CreateGameDefString(string text)
         {
-            StringBuilder MainString = new StringBuilder();
-            MainString.AppendLine("#include <SDL.h>");
-            MainString.AppendLine("#include <iostream>");
-            MainString.AppendLine("#include \"SDL_image.h\"");
-            MainString.AppendLine("");
-            MainString.AppendLine("#include \"" + textBoxSkeleton.Text + ".h\"");
-            MainString.AppendLine("");
-            MainString.AppendLine("" + textBoxSkeleton.Text + "::" + textBoxSkeleton.Text + "() {");
-            MainString.AppendLine("    window = nullptr;");
-            MainString.AppendLine("    renderer = nullptr;");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::Start() {");
-            MainString.AppendLine("    SDL_Init(SDL_INIT_EVERYTHING);");
-            MainString.AppendLine("    window = SDL_CreateWindow(\"Window\", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 800, SDL_WINDOW_SHOWN);");
-            MainString.AppendLine("    renderer = SDL_CreateRenderer(window, -1, 0);");
-            MainString.AppendLine("");
-            MainString.AppendLine("    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);");
-            MainString.AppendLine("    LoadTextures();");
-            MainString.AppendLine("");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::LoadTextures() {");
-            MainString.AppendLine("    //example->SetTexture(load(\"textures/example.png\", renderer)); Example Texture Load");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::Events() {");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::Exit(bool& status, const Uint8* state) {");
-            MainString.AppendLine("    if (state[SDL_SCANCODE_ESCAPE]) {");
-            MainString.AppendLine("        status = false;");
-            MainString.AppendLine("    }");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::Movement(bool &status) {");
-            MainString.AppendLine("    SDL_PumpEvents();");
-            MainString.AppendLine("    const Uint8* state = SDL_GetKeyboardState(NULL);");
-            MainString.AppendLine("    Exit(status,state);");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("void " + textBoxSkeleton.Text + "::Render() {");
-            MainString.AppendLine("    SDL_RenderClear(renderer);");
-            MainString.AppendLine("    //SDL_RenderCopy(renderer, textback, NULL, &rectback); Example Direct Rendering");
-            MainString.AppendLine("    SDL_RenderPresent(renderer);");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("SDL_Texture* " + textBoxSkeleton.Text + "::load(const char* file, SDL_Renderer* ren) {");
-            MainString.AppendLine("    SDL_Surface* tmpSurface = IMG_Load(file);");
-            MainString.AppendLine("    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, tmpSurface);");
-            MainString.AppendLine("    SDL_FreeSurface(tmpSurface);");
-            MainString.AppendLine("    return tex;");
-            MainString.AppendLine("}");
-            MainString.AppendLine("");
-            MainString.AppendLine("" + textBoxSkeleton.Text + "::~" + textBoxSkeleton.Text + "() {");
-            MainString.AppendLine("    SDL_DestroyRenderer(renderer);");
-            MainString.AppendLine("    SDL_DestroyWindow(window);");
-            MainString.AppendLine("    SDL_Quit();");
-            MainString.AppendLine("    //std::cout << \"Resources Destroyed\";");
-            MainString.AppendLine("}");
-            return MainString.ToString();
+            string filePath = "Code/MGameClassM.h";
+
+            string content = File.ReadAllText(filePath);
+
+            string updatedContent = content.Replace("MClassM", text);
+
+            return updatedContent;
         }
 
 

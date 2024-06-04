@@ -76,7 +76,7 @@
             button1.Name = "button1";
             button1.Size = new Size(138, 22);
             button1.TabIndex = 2;
-            button1.Text = "METHANE v0.6";
+            button1.Text = "METHANE v0.7";
             button1.UseVisualStyleBackColor = true;
             // 
             // textBoxClass
